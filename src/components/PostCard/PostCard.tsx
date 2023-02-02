@@ -14,21 +14,26 @@ import {
     Image, VStack
 } from "@chakra-ui/react";
 import {BsThreeDotsVertical} from 'react-icons/bs'
-import {CiHashtag} from 'react-icons/ci'
 import Tags from "../Tags/Tags";
+import moment from "moment";
+
+interface Props {
+    post: IPost
+}
 
 
-const PostCard: FC = () => {
+const PostCard: FC<Props> = ({post}) => {
+
     return (
         <Card>
             <CardHeader>
                 <Flex>
                     <Flex flex='1' gap='4' alignItems='center' flexWrap='wrap'>
-                        <Avatar name='Segun Adebayo' src='https://bit.ly/sage-adebayo' />
+                        <Avatar name={post.author.username} src='https://bit.ly/sage-adebayo' />
 
                         <Box>
-                            <Heading size='sm'>Superiorkid</Heading>
-                            <Text>30 jan</Text>
+                            <Heading size='sm'>{post.author.username}</Heading>
+                            <Text>{moment(post.createdAt.toString()).fromNow()}</Text>
                         </Box>
                     </Flex>
                     <IconButton
@@ -43,10 +48,12 @@ const PostCard: FC = () => {
                 <Flex direction="column" gap={2}>
                     <Image
                         objectFit='cover'
-                        src='https://images.unsplash.com/photo-1531403009284-440f080d1e12?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80'
+                        src={"http://localhost:8000/post/cover/" + post.thumbnail}
                         alt='Chakra UI'
+                        w="full"
+                        h="200px"
                     />
-                    <Text fontSize="2xl" ml="5px">How to use React JS + CHakra Ui</Text>
+                    <Text fontSize="2xl" ml="5px">{post.title}</Text>
                 </Flex>
                 <HStack spacing={4}>
                     <Tags/>

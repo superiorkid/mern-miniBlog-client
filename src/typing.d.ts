@@ -4,5 +4,11 @@ interface IPost {
     slug: string,
     thumbnail: File | string,
     createdAt: Date,
-    updatedAt: Date
+    updatedAt: Date,
+    author: IUser
+}
+
+interface IUser {
+    username: string,
+    email: string,
 }

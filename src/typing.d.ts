@@ -1,5 +1,8 @@
 interface IPost {
     title: string,
     body: string,
-    thumbnail: File
+    slug: string,
+    thumbnail: File | string,
+    createdAt: Date,
+    updatedAt: Date
 }

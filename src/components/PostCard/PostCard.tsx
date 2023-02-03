@@ -11,11 +11,16 @@ import {
     IconButton,
     Text,
     HStack,
-    Image, VStack
+    Image, VStack, LinkOverlay, LinkBox
 } from "@chakra-ui/react";
 import {BsThreeDotsVertical} from 'react-icons/bs'
 import {CiHashtag} from 'react-icons/ci'
 import Tags from "../Tags/Tags";
+import moment from "moment";
+
+interface Props {
+    post: IPost
+}
 
 
 const PostCard: FC = () => {
@@ -43,10 +48,12 @@ const PostCard: FC = () => {
                 <Flex direction="column" gap={2}>
                     <Image
                         objectFit='cover'
-                        src='https://images.unsplash.com/photo-1531403009284-440f080d1e12?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80'
+                        src={"http://localhost:8000/post/cover/" + post.thumbnail}
                         alt='Chakra UI'
+                        w="full"
+                        h="200px"
                     />
-                    <Text fontSize="2xl" ml="5px">How to use React JS + CHakra Ui</Text>
+                    <Text fontSize="2xl" ml="5px">{post.title}</Text>
                 </Flex>
                 <HStack spacing={4}>
                     <Tags/>

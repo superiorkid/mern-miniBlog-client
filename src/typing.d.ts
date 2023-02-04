@@ -11,5 +11,6 @@ interface IPost {
 interface IUser {
     username: string,
     email: string,
-    password: string
+    password: string,
+    confirmPassword: string
 }

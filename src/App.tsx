@@ -7,6 +7,7 @@ import WriteNewArticle from "./pages/WriteNewArticle/WriteNewArticle";
 import Login from "./pages/Login/Login";
 import Register from "./pages/Register/Register";
 import DetailPost from "./pages/DetailPost/DetailPost";
+import PublicRoute from "./utils/PublicRoute";
 
 
 const App: FC = () => {
@@ -16,8 +17,16 @@ const App: FC = () => {
             <Route path="/detail/:slug" element={<DetailPost/>} />
             <Route path="/profile" element={<UserProfile/>} />
             <Route path="/write-article" element={<WriteNewArticle/>} />
-            <Route path="/login" element={<Login/>} />
-            <Route path="/register" element={<Register/>} />
+            <Route path="/login" element={
+                <PublicRoute>
+                    <Login/>
+                </PublicRoute>
+            } />
+            <Route path="/register" element={
+                <PublicRoute>
+                    <Register/>
+                </PublicRoute>
+            } />
         </Routes>
     )
 }

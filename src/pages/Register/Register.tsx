@@ -4,14 +4,14 @@ import {
     Flex,
     FormControl, FormErrorMessage,
     FormLabel,
-    Input, InputGroup, useToast, InputRightElement
+    Input, InputGroup, useToast, InputRightElement, Text, Link
 } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from 'yup'
 import { useMutation } from "react-query";
 import { userRegister } from "../../api/Auth";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link as RRDLink } from "react-router-dom";
 
 
 const schema = yup.object({
@@ -107,6 +107,7 @@ const Register: FC = () => {
                             </FormErrorMessage>
                         </FormControl>
                         <Button mt="10px" colorScheme="blue" w="full" type="submit" isLoading={isSubmitting}>Register</Button>
+                        <Text>Have an account? <Link as={RRDLink} to="/login">Login</Link></Text>
                     </form>
                 </Flex>
             </Box>

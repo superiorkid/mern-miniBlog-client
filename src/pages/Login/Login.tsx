@@ -1,4 +1,4 @@
-import React, {FC} from "react";
+import React, {FC, useState} from "react";
 import {
     Box,
     Button,
@@ -6,13 +6,13 @@ import {
     FormControl,
     FormErrorMessage,
     FormLabel,
-    Input,
-    useToast
+    Input, InputGroup, InputRightElement,
+    useToast, Link, Text
 } from "@chakra-ui/react";
-import {useForm} from "react-hook-form";
+import {set, useForm} from "react-hook-form";
 import {yupResolver} from "@hookform/resolvers/yup";
 import * as yup from 'yup'
-import {useNavigate} from "react-router-dom";
+import {useNavigate, Link as RRDLink} from "react-router-dom";
 import {useMutation} from "react-query";
 import {userLogin} from "../../api/Auth";
 
@@ -28,6 +28,9 @@ const Login: FC = () => {
     const toast = useToast()
     const navigate = useNavigate()
     const mutation = useMutation(userLogin)
+    const [showPassword, setShowPassword] = useState<boolean>(false)
+
+    const showPasswordHandler = () => setShowPassword((prevState) => !prevState)
 
     const onSubmitHandler = async (data: IUser) => {
         mutation.mutate(data, {
@@ -69,12 +72,20 @@ const Login: FC = () => {
                         </FormControl>
                         <FormControl isInvalid={Boolean(errors.password)}>
                             <FormLabel>Password</FormLabel>
-                            <Input type="password" placeholder="enter your password"  {...register("password")} />
+                            <InputGroup>
+                                <Input type={showPassword ? "text" : "password"} placeholder="enter your password"  {...register("password")} />
+                                <InputRightElement width='4.5rem'>
+                                <Button h='1.75rem' size='sm' onClick={showPasswordHandler}>
+                                    {showPassword ? 'Hide' : 'Show'}
+                                </Button>
+                            </InputRightElement>
+                            </InputGroup>
                             <FormErrorMessage>
                                 {errors.password && errors.password.message}
                             </FormErrorMessage>
                         </FormControl>
                         <Button mt="10px" colorScheme="blue" w="full" type="submit" isLoading={isSubmitting}>Sign In</Button>
+                        <Text>Dont have an account? <Link as={RRDLink} to="/register">Register</Link></Text>
                     </form>
                 </Flex>
             </Box>

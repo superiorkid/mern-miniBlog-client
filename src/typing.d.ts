@@ -1,21 +1,26 @@
-
 interface IPost {
   id: string;
   title: string;
   body: string;
   slug: string;
-  thumbnail?: string | {
-    [index: string]: string
-  };
+  thumbnail?:
+    | string
+    | {
+        [index: string]: string;
+      };
   createdAt: Date;
   updatedAt: Date;
   author: IUser;
   tags: ITag[] | string;
 }
 
+interface ITag {
+  name: string;
+}
+
 interface IUser {
-    username: string,
-    email: string,
-    password: string,
-    confirmPassword: string
+  username: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
 }

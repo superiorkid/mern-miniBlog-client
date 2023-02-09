@@ -1,11 +1,10 @@
 import React, { FC } from "react";
 import Layout from "../../components/Layout/Layout";
-import {Link as RRDLink} from "react-router-dom";
+import { Link as RRDLink } from "react-router-dom";
 import PostCard from "../../components/PostCard/PostCard";
-import {Box, Button, Flex, Heading, Spacer} from "@chakra-ui/react";
-import {useQuery} from "react-query";
-import {fetchPosts} from "../../api/FetchPost";
-
+import { Box, Button, Flex, Heading, Spacer } from "@chakra-ui/react";
+import { useQuery } from "react-query";
+import { fetchPosts } from "../../api/FetchPost";
 
 const Home: FC = () => {
   const { data, isLoading, isError, error } = useQuery<IPost[], Error>(
@@ -22,24 +21,28 @@ const Home: FC = () => {
     return <Box>{error.message}</Box>;
   }
 
-    return (
-        <Layout>
-            <Box borderBottom='1px' borderColor='gray.200' p="2" mb="3px">
-                <Flex alignItems="center">
-                    <Heading ml="3px" size="lg">Latest</Heading>
-                    <Spacer/>
-                    {auth && (
-                        <Button as={RRDLink} to="/write-article" colorScheme="teal">
-                            Write new acticle
-                        </Button>
-                    )}
-                </Flex>
-            </Box>
-            <Flex direction="column" gap={3} p={2}>
-                {data?.map((post) => (
-                    <PostCard key={post.slug} post={post} />
-                ))}
-            </Flex>
-        </Layout>
-    )
-}
+  return (
+    <Layout>
+      <Box borderBottom="1px" borderColor="gray.200" p="2" mb="3px">
+        <Flex alignItems="center">
+          <Heading ml="3px" size="lg">
+            Latest
+          </Heading>
+          <Spacer />
+          {auth && (
+            <Button as={RRDLink} to="/write-article" colorScheme="teal">
+              Write new acticle
+            </Button>
+          )}
+        </Flex>
+      </Box>
+      <Flex direction="column" gap={3} p={2}>
+        {data?.map((post) => (
+          <PostCard key={post.slug} post={post} />
+        ))}
+      </Flex>
+    </Layout>
+  );
+};
+
+export default Home;

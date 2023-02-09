@@ -1,39 +1,48 @@
-import React, {FC} from "react";
+import React, {FC, MouseEventHandler} from "react";
 import {
-    Card,
-    CardHeader,
-    CardBody,
-    CardFooter,
-    Flex,
-    Avatar,
-    Box,
-    Heading,
-    IconButton,
-    Text,
-    HStack,
-    Image, VStack, LinkOverlay, LinkBox
+  Card,
+  CardHeader,
+  CardBody,
+  Flex,
+  Avatar,
+  Box,
+  Heading,
+  IconButton,
+  Text,
+  HStack,
+  Image,
+  VStack,
+  LinkOverlay,
+  LinkBox,
+  Menu, MenuButton, MenuList, MenuItem, useToast, Button
 } from "@chakra-ui/react";
 import {BsThreeDotsVertical} from 'react-icons/bs'
-import {CiHashtag} from 'react-icons/ci'
 import Tags from "../Tags/Tags";
 import moment from "moment";
+import {Link as RRDLink} from 'react-router-dom'
 
 interface Props {
-    post: IPost
+  post: IPost;
 }
 
+const PostCard: FC<Props> = ({ post }) => {
+  const toast = useToast()
+  const navigate = useNavigate()
+  const queryClient = useQueryClient()
+  const auth = localStorage.getItem('token')
 
-const PostCard: FC = () => {
+const PostCard: FC<Props> = ({post}) => {
+
     return (
         <Card>
             <CardHeader>
                 <Flex>
                     <Flex flex='1' gap='4' alignItems='center' flexWrap='wrap'>
-                        <Avatar name='Segun Adebayo' src='https://bit.ly/sage-adebayo' />
+                        <Avatar name={post.author.username} src='https://bit.ly/sage-adebayo' />
 
                         <Box>
-                            <Heading size='sm'>Superiorkid</Heading>
-                            <Text>30 jan</Text>
+                            <Heading size='sm'>{post.author.username}</Heading>
+                            <Text>{moment(post.createdAt.toString()).fromNow()}</Text>
                         </Box>
                     </Flex>
                     <IconButton
@@ -45,22 +54,24 @@ const PostCard: FC = () => {
                 </Flex>
             </CardHeader>
             <CardBody>
-                <Flex direction="column" gap={2}>
-                    <Image
-                        objectFit='cover'
-                        src={"http://localhost:8000/post/cover/" + post.thumbnail}
-                        alt='Chakra UI'
-                        w="full"
-                        h="200px"
-                    />
-                    <Text fontSize="2xl" ml="5px">{post.title}</Text>
-                </Flex>
-                <HStack spacing={4}>
-                    <Tags/>
-                </HStack>
+                <LinkBox>
+                    <Flex direction="column" gap={2}>
+                        <Image
+                            objectFit='cover'
+                            src={"http://localhost:8000/post/cover/" + post.thumbnail}
+                            alt='Chakra UI'
+                            w="full"
+                            h="200px"
+                        />
+                        <LinkOverlay as={RRDLink} to={`/detail/${post.slug}`}>
+                            <Text fontSize="2xl" ml="5px">{post.title}</Text>
+                        </LinkOverlay>
+                    </Flex>
+                    <HStack spacing={4}>
+                        <Tags/>
+                    </HStack>
+                </LinkBox>
             </CardBody>
         </Card>
     )
 }
-
-export default PostCard

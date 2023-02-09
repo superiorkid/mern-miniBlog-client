@@ -1,41 +1,52 @@
-import React, {FC, useState} from "react";
+import React, { FC, useState } from "react";
 import {
-    Box,
-    Button,
-    Flex,
-    FormControl,
-    FormErrorMessage,
-    FormLabel,
-    Input, InputGroup, InputRightElement,
-    useToast, Link, Text
+  Box,
+  Button,
+  Flex,
+  FormControl,
+  FormErrorMessage,
+  FormLabel,
+  Input,
+  InputGroup,
+  InputRightElement,
+  useToast,
+  Link,
+  Text,
 } from "@chakra-ui/react";
-import {set, useForm} from "react-hook-form";
-import {yupResolver} from "@hookform/resolvers/yup";
-import * as yup from 'yup'
-import {useNavigate, Link as RRDLink} from "react-router-dom";
-import {useMutation} from "react-query";
-import {userLogin} from "../../api/Auth";
+import { set, useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+import { useNavigate, Link as RRDLink } from "react-router-dom";
+import { useMutation } from "react-query";
+import { userLogin } from "../../api/Auth";
 
-const schema = yup.object({
+const schema = yup
+  .object({
     email: yup.string().email().required(),
-    password: yup.string().min(5)
-}).required()
+    password: yup.string().min(5),
+  })
+  .required();
 
 const Login: FC = () => {
-    const {handleSubmit, reset, register, formState: {errors, isSubmitting} } = useForm<IUser>({
-        resolver: yupResolver(schema)
-    })
-    const toast = useToast()
-    const navigate = useNavigate()
-    const mutation = useMutation(userLogin)
-    const [showPassword, setShowPassword] = useState<boolean>(false)
+  const {
+    handleSubmit,
+    reset,
+    register,
+    formState: { errors, isSubmitting },
+  } = useForm<IUser>({
+    resolver: yupResolver(schema),
+  });
+  const toast = useToast();
+  const navigate = useNavigate();
+  const mutation = useMutation(userLogin);
+  const [showPassword, setShowPassword] = useState<boolean>(false);
 
-    const showPasswordHandler = () => setShowPassword((prevState) => !prevState)
+  const showPasswordHandler = () => setShowPassword((prevState) => !prevState);
 
     const onSubmitHandler = async (data: IUser) => {
         mutation.mutate(data, {
             onSuccess: (data, variables, context) => {
-                localStorage.setItem("token", `Bearer ${data.token}`)
+                localStorage.setItem("token", data.token)
                 toast({
                     title: "Login successfully",
                     status: "success",
@@ -85,12 +96,9 @@ const Login: FC = () => {
                             </FormErrorMessage>
                         </FormControl>
                         <Button mt="10px" colorScheme="blue" w="full" type="submit" isLoading={isSubmitting}>Sign In</Button>
-                        <Text>Dont have an account? <Link as={RRDLink} to="/register">Register</Link></Text>
                     </form>
                 </Flex>
             </Box>
         </>
     )
 }
-
-export default Login

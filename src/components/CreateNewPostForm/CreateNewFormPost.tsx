@@ -1,52 +1,73 @@
-import React, {FC, useEffect} from "react";
-import {Button, FormControl, FormErrorMessage, Input, useToast, VStack} from "@chakra-ui/react";
+import React, {FC, useEffect, useState} from "react";
+import {
+    Button,
+    FormControl,
+    FormErrorMessage,
+    Input,
+    InputGroup,
+    useToast,
+    VStack,
+    InputLeftAddon,
+    Stack,
+    Image
+} from "@chakra-ui/react";
 import ReactQuill from "react-quill";
-import {useForm} from "react-hook-form";
+import {SubmitHandler, useForm} from "react-hook-form";
 import {yupResolver} from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import axios from 'axios'
+import {useNavigate} from "react-router-dom";
+import {useFilePicker} from "use-file-picker";
 
-
-const schema = yup.object({
+const schema = yup
+  .object({
     title: yup.string().required(),
     body: yup.string().required(),
-    thumbnail: yup.mixed().required("File is required.")
 }).required()
+
+type FormData = yup.InferType<typeof schema>
 
 
 const modules = {
-    toolbar: [
-        [{ header: [1, 2, false] }],
-        ['bold', 'italic', 'underline', 'strike', 'blockquote'],
-        [
-            { list: 'ordered' },
-            { list: 'bullet' },
-            { indent: '-1' },
-            { indent: '+1' },
-        ],
-        ['link', 'code'],
-        ['clean'],
+  toolbar: [
+    [{ header: [1, 2, false] }],
+    ["bold", "italic", "underline", "strike", "blockquote"],
+    [
+      { list: "ordered" },
+      { list: "bullet" },
+      { indent: "-1" },
+      { indent: "+1" },
     ],
+    ["link", "code"],
+    ["clean"],
+  ],
 };
 
-
 const formats = [
-    'header',
-    'bold',
-    'italic',
-    'underline',
-    'strike',
-    'blockquote',
-    'list',
-    'bullet',
-    'indent',
-    'link',
-    'code',
+  "header",
+  "bold",
+  "italic",
+  "underline",
+  "strike",
+  "blockquote",
+  "list",
+  "bullet",
+  "indent",
+  "link",
+  "code",
 ];
 
 const CreateNewFormPost: FC = () => {
+    const [openFileSelector, { filesContent, loading, plainFiles, clear }] = useFilePicker({
+        readAs: "DataURL",
+        accept: ["image/jpeg", "image/jpg", "image/png"],
+        multiple: false,
+        limitFilesConfig: {max: 2},
+        maxFileSize: 50 // in megabytes
+    })
+    const navigate = useNavigate()
     const toast = useToast()
-    const {handleSubmit, register, formState: {errors, isSubmitting}, reset, watch, setValue} = useForm<IPost>({
+    const {handleSubmit, register, formState: {errors, isSubmitting}, reset, watch, setValue} = useForm<FormData>({
         resolver: yupResolver(schema)
     })
 
@@ -58,15 +79,22 @@ const CreateNewFormPost: FC = () => {
         setValue("body", editorState)
     }
 
-    const onSubmitHandler = async (newPost: IPost)  => {
+    const bodyContent = watch("body")
 
+
+
+    const onSubmitHandler: SubmitHandler<FormData> = async (newPost)  => {
         const formData = new FormData()
         formData.append('title', newPost.title)
         formData.append("body", newPost.body)
-        // @ts-ignore
-        formData.append("thumbnail", newPost.thumbnail[0])
+        formData.append('thumbnail', filesContent[0].content)
+        formData.append("tags", newPost.tags)
 
-        await axios.post<IPost>("http://localhost:8000/post/", formData).then((res) => {
+        await axios.post<IPost>("http://localhost:8000/post/", formData, {
+            headers: {
+                Authorization: "Bearer " + localStorage.getItem("token")
+            }
+        }).then((res) => {
             toast({
                 title: "Added new post successfully",
                 status: "success",
@@ -88,22 +116,33 @@ const CreateNewFormPost: FC = () => {
 
     }
 
-    const bodyContent = watch("body")
-
     return (
         <form onSubmit={handleSubmit(onSubmitHandler)}>
-
             <VStack spacing="11px">
-                <FormControl isInvalid={Boolean(errors.thumbnail)}>
-                    <input type="file" {...register("thumbnail")} accept="image/*" />
-                    <FormErrorMessage>
-                        {errors.thumbnail && errors.thumbnail.message}
-                    </FormErrorMessage>
+                <FormControl>
+                    <Stack direction="row">
+                        <Button border="2px" borderColor='green.500' onClick={() => openFileSelector()} isLoading={loading}>{!!plainFiles.length ? "Change" : "Add a cover image"}</Button>
+                        {!!plainFiles.length && (
+                            <>
+                                <Button border="2px" borderColor='red.500' onClick={() => clear()} isLoading={loading}>Clear</Button>
+                                <Image boxSize='150px' objectFit='cover' src={filesContent[0].content} alt={filesContent[0].name} />
+                            </>
+                        )}
+                    </Stack>
                 </FormControl>
                 <FormControl isInvalid={Boolean(errors.title)}>
                     <Input type="text" {...register("title")} placeholder="New post title here..." />
                     <FormErrorMessage>
                         {errors.title && errors.title.message}
+                    </FormErrorMessage>
+                </FormControl>
+                <FormControl isInvalid={Boolean(errors.tags)}>
+                    <InputGroup>
+                        <InputLeftAddon children='tags' />
+                        <Input type="text" {...register("tags")} placeholder="example: react, mongodb" />
+                    </InputGroup>
+                    <FormErrorMessage>
+                        {errors.tags && errors.tags.message}
                     </FormErrorMessage>
                 </FormControl>
                 <FormControl isInvalid={Boolean(errors.body)}>
@@ -119,6 +158,4 @@ const CreateNewFormPost: FC = () => {
         </form>
     )
 
-}
-
-export  default CreateNewFormPost
+export default CreateNewFormPost;

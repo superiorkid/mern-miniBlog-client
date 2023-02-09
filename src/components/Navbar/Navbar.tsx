@@ -1,6 +1,6 @@
-import {FC} from "react";
-import {Box, Container, Flex, Heading, HStack, Spacer, Link} from "@chakra-ui/react";
-import {Link as RRDLink} from 'react-router-dom'
+import React, {FC} from "react";
+import {Box, Container, Flex, Heading, HStack, Spacer, Link, Button, useToast} from "@chakra-ui/react";
+import {Link as RRDLink, useLocation, useNavigate} from 'react-router-dom'
 
 
 const Navbar: FC = () => {
@@ -9,7 +9,7 @@ const Navbar: FC = () => {
             <Container maxW="1000px">
                 <Flex minWidth="max-content" alignItems="center">
                     <Box p="2">
-                        <Heading size="md">My Blog</Heading>
+                        <Heading size="md">Errors collection</Heading>
                     </Box>
                     <Spacer/>
                     <Box p="2">

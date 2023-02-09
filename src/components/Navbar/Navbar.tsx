@@ -9,29 +9,68 @@ import {
   Link,
   Button,
   useToast,
+  Input,
 } from "@chakra-ui/react";
 import { Link as RRDLink, useLocation, useNavigate } from "react-router-dom";
 
 const Navbar: FC = () => {
+  const navigate = useNavigate();
+  const auth = localStorage.getItem("token");
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    navigate("/");
+  };
+
   return (
     <Box bg="teal.500" p="10px" color="white">
       <Container maxW="1000px">
-        <Flex minWidth="max-content" alignItems="center">
+        <Flex minWidth="max-content" alignItems="center" gap={2}>
           <Box p="2">
             <Heading size="md">Errors collection</Heading>
+          </Box>
+
+          {auth && <Box p="2">
+            <Button as={RRDLink} to="/write-article" colorScheme="yellow">
+              Write new acticle
+            </Button>
+          </Box>}
+          
+          <Box p="2">
+            <Input
+              type="search"
+              placeholder="Search..."
+              bg={"gray.200"}
+              color="black"
+            />
           </Box>
           <Spacer />
           <Box p="2">
             <HStack gap="3">
               <Heading size="sm">
                 <Link as={RRDLink} to="/">
-                  Home
+                  Article
                 </Link>
               </Heading>
               <Heading size="sm">
-                <Link as={RRDLink} to="/profile">
-                  About
-                </Link>
+                {auth ? (
+                  <Button
+                    colorScheme="red"
+                    variant="solid"
+                    onClick={handleLogout}
+                  >
+                    Logout
+                  </Button>
+                ) : (
+                  <Button
+                    as={RRDLink}
+                    to="/login"
+                    colorScheme="blue"
+                    variant="solid"
+                  >
+                    Login
+                  </Button>
+                )}
               </Heading>
             </HStack>
           </Box>

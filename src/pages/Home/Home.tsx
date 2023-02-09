@@ -24,17 +24,9 @@ const Home: FC = () => {
   return (
     <Layout>
       <Box borderBottom="1px" borderColor="gray.200" p="2" mb="3px">
-        <Flex alignItems="center">
-          <Heading ml="3px" size="lg">
-            Latest
-          </Heading>
-          <Spacer />
-          {auth && (
-            <Button as={RRDLink} to="/write-article" colorScheme="teal">
-              Write new acticle
-            </Button>
-          )}
-        </Flex>
+        <Heading ml="3px" size="lg">
+          Latest
+        </Heading>
       </Box>
       <Flex direction="column" gap={3} p={2}>
         {data?.map((post) => (

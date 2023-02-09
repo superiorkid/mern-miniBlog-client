@@ -9,10 +9,6 @@ const Tags: FC = () => {
         <TagLeftIcon boxSize="12px" as={CiHashtag} />
         <TagLabel>JavaScript</TagLabel>
       </Tag>
-      <Tag size="sm" key="sm" variant="subtle" colorScheme="cyan">
-        <TagLeftIcon boxSize="12px" as={CiHashtag} />
-        <TagLabel>ReactJS</TagLabel>
-      </Tag>
     </>
   );
 };

@@ -19,3 +19,22 @@ export const fetchSinglePost = async (slug: string | undefined) => {
     const {data} = await axios.get<fetchSingleResponse>(baseUrl + slug)
     return data.data
 }
+
+export const deletePostFn = async (id: string) => {
+    const {data} = await axios.delete(baseUrl + id, {
+        headers: {
+            Authorization: "Bearer " + localStorage.getItem("token")
+        }
+    })
+    return data.data
+}
+
+export const updatePostFn = async ({id, newPost}: {id: string, newPost: IPost}) => {
+    const {data} = await axios.put(baseUrl + id, newPost, {
+        headers: {
+            Authorization: "Bearer " + localStorage.getItem("token")
+        }
+    })
+
+    return data.data
+}

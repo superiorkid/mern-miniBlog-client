@@ -35,7 +35,7 @@ const Login: FC = () => {
     const onSubmitHandler = async (data: IUser) => {
         mutation.mutate(data, {
             onSuccess: (data, variables, context) => {
-                localStorage.setItem("token", `Bearer ${data.token}`)
+                localStorage.setItem("token", data.token)
                 toast({
                     title: "Login successfully",
                     status: "success",
@@ -85,7 +85,6 @@ const Login: FC = () => {
                             </FormErrorMessage>
                         </FormControl>
                         <Button mt="10px" colorScheme="blue" w="full" type="submit" isLoading={isSubmitting}>Sign In</Button>
-                        <Text>Dont have an account? <Link as={RRDLink} to="/register">Register</Link></Text>
                     </form>
                 </Flex>
             </Box>

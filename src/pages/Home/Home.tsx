@@ -2,7 +2,15 @@ import React, { FC } from "react";
 import Layout from "../../components/Layout/Layout";
 import { Link as RRDLink } from "react-router-dom";
 import PostCard from "../../components/PostCard/PostCard";
-import { Box, Button, Flex, Heading, Spacer } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Flex,
+  Heading,
+  Spacer,
+  Alert,
+  AlertIcon,
+} from "@chakra-ui/react";
 import { useQuery } from "react-query";
 import { fetchPosts } from "../../api/FetchPost";
 
@@ -28,11 +36,20 @@ const Home: FC = () => {
           Latest
         </Heading>
       </Box>
-      <Flex direction="column" gap={3} p={2}>
-        {data?.map((post) => (
-          <PostCard key={post.slug} post={post} />
-        ))}
-      </Flex>
+      {data!.length < 1 ? (
+        <Box w="full" mt="7px" px="5px">
+          <Alert status="error">
+            <AlertIcon />
+            Post is empty
+          </Alert>
+        </Box>
+      ) : (
+        <Flex direction="column" gap={3} p={2}>
+          {data?.map((post) => (
+            <PostCard key={post.slug} post={post} />
+          ))}
+        </Flex>
+      )}
     </Layout>
   );
 };

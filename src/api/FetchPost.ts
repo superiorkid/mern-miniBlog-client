@@ -50,7 +50,7 @@ export const updatePostFn = async ({
 export const createPostFn = async (newPost: IPost) => {
   const { data } = await axios.post(baseUrl, newPost, {
     headers: {
-      Authorization: localStorage.getItem("token"),
+      Authorization: "Bearer " + localStorage.getItem("token"),
     },
   });
 

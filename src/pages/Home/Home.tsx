@@ -68,6 +68,20 @@ const Home: FC = () => {
           {filteredPost?.map((post) => (
             <PostCard key={post.slug} post={post} />
           ))}
+          <Text color={"grey"} as="i">
+            {filteredPost?.length > 0 ? (
+              <Box w="full" mt="7px" px="5px">
+                <Text>Found {filteredPost?.length}</Text>
+              </Box>
+            ) : (
+              <Box w="full" mt="7px" px="5px">
+                <Alert status="error">
+                  <AlertIcon />
+                  No article found
+                </Alert>
+              </Box>
+            )}
+          </Text>
         </Flex>
       ) : (
         <Flex direction="column" gap={3} p={2}>
@@ -76,24 +90,6 @@ const Home: FC = () => {
           ))}
         </Flex>
       )}
-
-      {/* 
-      {data!.length < 1 ? (
-        <Box w="full" mt="7px" px="5px">
-          <Alert status="error">
-            <AlertIcon />
-            Post is empty
-          </Alert>
-        </Box>
-      ) : search ? (
-        <Text>Searching...</Text>
-      ) : (
-        <Flex direction="column" gap={3} p={2}>
-          {data?.map((post) => (
-            <PostCard key={post.slug} post={post} />
-          ))}
-        </Flex>
-      )} */}
     </Layout>
   );
 };

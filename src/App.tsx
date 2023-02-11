@@ -8,11 +8,15 @@ import Login from "./pages/Login/Login";
 import Register from "./pages/Register/Register";
 import DetailPost from "./pages/DetailPost/DetailPost";
 import PublicRoute from "./utils/PublicRoute";
+import EditPost from "./pages/EditPost/EditPost";
+import Tag from "./pages/Tag/Tag";
 
 const App: FC = () => {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
+      <Route path="/tag/:tag" element={<Tag />} />
+      <Route path="/edit/:slug" element={<EditPost />} />
       <Route path="/detail/:slug" element={<DetailPost />} />
       <Route path="/profile" element={<UserProfile />} />
       <Route path="/write-article" element={<WriteNewArticle />} />

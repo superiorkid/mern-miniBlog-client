@@ -16,6 +16,7 @@ interface IPost {
 
 interface ITag {
   name: string;
+  posts: IPost[];
 }
 
 interface IUser {

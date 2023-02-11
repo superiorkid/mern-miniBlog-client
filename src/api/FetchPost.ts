@@ -1,6 +1,4 @@
 import axios from "axios";
-import { isPlainObject } from "react-query/types/core/utils";
-import { string } from "yup";
 
 const baseUrl = "http://localhost:8000/post/";
 

@@ -1,5 +1,8 @@
 # mern-miniBlog-client
-client : react
+client : 
+ - ReactJS
+ - React-query
+ - ChakraUI
 
 miniBlog-server [this](https://github.com/superiorkid/mern-miniBlog-server).
 

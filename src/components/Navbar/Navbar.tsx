@@ -27,7 +27,7 @@ const Navbar: FC = () => {
       <Container maxW="1000px">
         <Flex minWidth="max-content" alignItems="center" gap={2}>
           <Box p="2">
-            <Heading size="md">Errors collection</Heading>
+            <Heading size="md">M E R N -miniBLOG</Heading>
           </Box>
 
           {auth && (

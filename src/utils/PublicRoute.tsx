@@ -1,19 +1,19 @@
-import React, {FC, ReactElement} from 'react';
-import {Navigate, useLocation} from "react-router-dom";
+import React, { FC, ReactElement } from "react";
+import { Navigate, useLocation } from "react-router-dom";
 
 interface Props {
-    children: ReactElement
+  children: ReactElement;
 }
 
-const PublicRoute:FC<Props> = ({children}): ReactElement => {
-    const location = useLocation()
-    const auth = localStorage.getItem("token")
+const PublicRoute: FC<Props> = ({ children }) => {
+  const location = useLocation();
+  const auth = localStorage.getItem("token");
 
-    if (auth) {
-        return <Navigate to='/' state={{from: location}} replace />
-    }
+  if (auth) {
+    return <Navigate to="/" state={{ from: location }} replace />;
+  }
 
-    return children
+  return children;
 };
 
 export default PublicRoute;

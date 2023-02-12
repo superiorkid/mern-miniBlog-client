@@ -72,12 +72,10 @@ const PostCard: FC<Props> = ({ post }) => {
       });
     },
   });
-  
 
   const deletePostHandler = () => {
     deletePost(post.id);
   };
-
 
   return (
     <Card>
@@ -153,13 +151,24 @@ const PostCard: FC<Props> = ({ post }) => {
       <CardBody>
         <LinkBox>
           <Flex direction="column" gap={2}>
-            <Image
-              objectFit="cover"
-              src={"http://localhost:8000/post/cover/" + post.thumbnail}
-              alt="Chakra UI"
-              w="full"
-              h="200px"
-            />
+            {post.thumbnail !== null ? (
+              <Image
+                objectFit="cover"
+                src={`http://localhost:8000/post/cover/${post.thumbnail}`}
+                alt="Chakra UI"
+                w="full"
+                h="200px"
+              />
+            ) : (
+              <Image
+                objectFit="cover"
+                fallbackSrc="https://via.placeholder.com/500x200"
+                alt="Chakra UI"
+                w="full"
+                h="200px"
+              />
+            )}
+
             <LinkOverlay as={RRDLink} to={`/detail/${post.slug}`}>
               <Text fontSize="2xl" ml="5px">
                 {post.title}

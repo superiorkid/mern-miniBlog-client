@@ -23,33 +23,26 @@ const Navbar: FC = () => {
   };
 
   return (
-    <Box bg="teal.500" p="10px" color="white">
+    <Box as="nav" bg="teal.500" p="10px" color="white">
       <Container maxW="1000px">
         <Flex minWidth="max-content" alignItems="center" gap={2}>
           <Box p="2">
             <Heading size="md">Errors collection</Heading>
           </Box>
 
-          {auth && <Box p="2">
-            <Button as={RRDLink} to="/write-article" colorScheme="yellow">
-              Write new acticle
-            </Button>
-          </Box>}
-          
-          <Box p="2">
-            <Input
-              type="search"
-              placeholder="Search..."
-              bg={"gray.200"}
-              color="black"
-            />
-          </Box>
+          {auth && (
+            <Box p="2">
+              <Button as={RRDLink} to="/write-article" colorScheme="yellow">
+                Write new acticle
+              </Button>
+            </Box>
+          )}
           <Spacer />
           <Box p="2">
             <HStack gap="3">
               <Heading size="sm">
                 <Link as={RRDLink} to="/">
-                  Article
+                  Home
                 </Link>
               </Heading>
               <Heading size="sm">

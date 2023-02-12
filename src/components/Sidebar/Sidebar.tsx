@@ -20,7 +20,7 @@ const Sidebar: FC = () => {
   const filteredTags = tags?.filter((predicate) => predicate.posts.length > 0);
 
   return (
-    <Box as="aside" p="10px" w="200px">
+    <Box as="aside" p="10px" w="200px" position="relative">
       <Heading
         size="md"
         p="5px"

@@ -1,6 +1,14 @@
 import { FC } from "react";
 import Layout from "../../components/Layout/Layout";
-import { Box, Heading, Spacer, Alert, AlertIcon } from "@chakra-ui/react";
+import {
+  Box,
+  Heading,
+  Spacer,
+  Alert,
+  AlertIcon,
+  Text,
+  Badge,
+} from "@chakra-ui/react";
 import { useParams } from "react-router-dom";
 import { useQuery } from "react-query";
 import { fetchTagsFn } from "../../api/FetchTags";
@@ -15,8 +23,6 @@ const Tag: FC = () => {
     ?.filter((predicate) => predicate.name === tag)
     .map((post) => post.posts)[0]; // [ [ {} ] ]
 
-  console.log(filtered);
-
   return (
     <Layout>
       <Box
@@ -27,10 +33,12 @@ const Tag: FC = () => {
         display="flex"
       >
         <Heading ml="3px" size="lg">
-          # Programming
+          <Text>
+            Filtered by <Badge fontSize="lg">#{tag}</Badge>
+          </Text>
         </Heading>
       </Box>
-      {filtered!.length > 0 ? (
+      {filtered!?.length > 0 ? (
         filtered?.map((post) => <PostCard key={post.slug} post={post} />)
       ) : (
         <Box w="full" mt="7px" px="5px">

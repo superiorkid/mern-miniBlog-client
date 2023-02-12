@@ -15,6 +15,7 @@ import {
 import { useQuery } from "react-query";
 import { fetchPosts } from "../../api/FetchPost";
 import Search from "../../components/Search/Search";
+import Loaders from "../../components/Loaders/Loaders";
 
 const Home: FC = () => {
   const { data, isLoading, isError, error } = useQuery<IPost[], Error>(
@@ -25,7 +26,7 @@ const Home: FC = () => {
   const [search, setSearch] = useState<string>("");
 
   if (isLoading) {
-    return <Box>loading...</Box>;
+    return <Loaders />;
   }
 
   if (isError) {
@@ -36,7 +37,7 @@ const Home: FC = () => {
     setSearch(value);
   };
 
-  const filteredPost = data?.filter((predicate, index) => {
+  const filteredPost = data?.filter((predicate) => {
     return predicate.title.toLowerCase().includes(search);
   });
 
@@ -68,20 +69,18 @@ const Home: FC = () => {
           {filteredPost?.map((post) => (
             <PostCard key={post.slug} post={post} />
           ))}
-          <Text color={"grey"} as="i">
-            {filteredPost?.length > 0 ? (
-              <Box w="full" mt="7px" px="5px">
-                <Text>Found {filteredPost?.length}</Text>
-              </Box>
-            ) : (
-              <Box w="full" mt="7px" px="5px">
-                <Alert status="error">
-                  <AlertIcon />
-                  No article found
-                </Alert>
-              </Box>
-            )}
-          </Text>
+          {filteredPost!.length > 0 ? (
+            <Box w="full" mt="7px" px="5px">
+              <Text>Found {filteredPost?.length}</Text>
+            </Box>
+          ) : (
+            <Box w="full" mt="7px" px="5px">
+              <Alert status="error">
+                <AlertIcon />
+                Whoops! no result found. Try a new keyword or phrase.
+              </Alert>
+            </Box>
+          )}
         </Flex>
       ) : (
         <Flex direction="column" gap={3} p={2}>

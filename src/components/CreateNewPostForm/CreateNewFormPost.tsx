@@ -1,5 +1,6 @@
 import React, { FC, useEffect, useState } from "react";
 import {
+  Code,
   Button,
   FormControl,
   FormErrorMessage,
@@ -10,6 +11,7 @@ import {
   InputLeftAddon,
   Stack,
   Image,
+  FormHelperText,
 } from "@chakra-ui/react";
 import ReactQuill from "react-quill";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -63,14 +65,16 @@ const formats = [
 
 const CreateNewFormPost: FC = () => {
   const queryClient = useQueryClient();
-  const [openFileSelector, { filesContent, loading, plainFiles, clear }] =
-    useFilePicker({
-      readAs: "DataURL",
-      accept: ["image/jpeg", "image/jpg", "image/png"],
-      multiple: false,
-      limitFilesConfig: { max: 2 },
-      maxFileSize: 50, // in megabytes
-    });
+  const [
+    openFileSelector,
+    { filesContent, loading, plainFiles, clear, errors: fileError },
+  ] = useFilePicker({
+    readAs: "DataURL",
+    accept: ["image/jpeg", "image/jpg", "image/png"],
+    multiple: false,
+    limitFilesConfig: { max: 2 },
+    maxFileSize: 50, // in megabytes
+  });
   const navigate = useNavigate();
   const toast = useToast();
   const {
@@ -114,7 +118,7 @@ const CreateNewFormPost: FC = () => {
     register("body", { required: true });
   }, [register]);
 
-  const onBodyStateChange = (editorState: any) => {
+  const onBodyStateChange = (editorState: string) => {
     setValue("body", editorState);
   };
 
@@ -124,7 +128,7 @@ const CreateNewFormPost: FC = () => {
     const formData = new FormData();
     formData.append("title", newPost.title);
     formData.append("body", newPost.body);
-    formData.append("thumbnail", filesContent[0].content);
+    formData.append("thumbnail", filesContent[0]?.content);
     formData.append("tags", newPost.tags);
     // @ts-ignore
     createPost(formData);
@@ -132,7 +136,7 @@ const CreateNewFormPost: FC = () => {
 
   return (
     <form onSubmit={handleSubmit(onSubmitHandler)}>
-      <VStack spacing="11px">
+      <VStack spacing="20px">
         <FormControl>
           <Stack direction="row">
             <Button
@@ -143,6 +147,11 @@ const CreateNewFormPost: FC = () => {
             >
               {!!plainFiles.length ? "Change" : "Add a cover image"}
             </Button>
+
+            {fileError[0]?.minLimitNotReached && (
+              <FormErrorMessage>"Not enough file"</FormErrorMessage>
+            )}
+
             {!!plainFiles.length && (
               <>
                 <Button
@@ -182,9 +191,13 @@ const CreateNewFormPost: FC = () => {
               placeholder="example: react, mongodb"
             />
           </InputGroup>
-          <FormErrorMessage>
-            {errors.tags && errors.tags.message}
-          </FormErrorMessage>
+          {!errors.tags ? (
+            <FormHelperText>
+              Use commas <Code children="," /> as separators.
+            </FormHelperText>
+          ) : (
+            <FormErrorMessage>{errors.tags.message}</FormErrorMessage>
+          )}
         </FormControl>
         <FormControl isInvalid={Boolean(errors.body)}>
           <ReactQuill
